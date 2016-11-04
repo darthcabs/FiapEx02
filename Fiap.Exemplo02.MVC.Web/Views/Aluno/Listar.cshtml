@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Fiap.Exemplo02.MVC.Web.Models.Aluno>
-
 @{
     ViewBag.Title = "Lista de alunos";
 }
@@ -12,12 +11,12 @@
     </div>
 }
 
-<h2>Listar</h2>
+<h2>Lista de alunos</h2>
 
 <p>
     @Html.ActionLink("Novo aluno", "Cadastrar")
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nome)
@@ -68,25 +67,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Excluir</h4>
             </div>
             <div class="modal-body">
                 <p>Deseja excluir o aluno?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
-                <form method="post" action="Excluir">
-                    <input type="hidden" id="id-aluno"/>
+                
+                @using (Html.BeginForm("Excluir", "Aluno", FormMethod.Post))
+                {
+                    <input type="hidden" id="id-aluno" name="id" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
                     <input type="submit" value="Sim" class="btn btn-default" />
-                </form>
+                }
             </div>
         </div>
-
     </div>
 </div>
 
 <script>
     function callExcluirModal(id) {
-        $("id-aluno").val(id);
+        $('#id-aluno').val(id);
     }
 </script>

@@ -1,16 +1,14 @@
 ﻿using Fiap.Exemplo02.MVC.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
     public class AlunoController : Controller
     {
-        private PortalContext contexto = new PortalContext();
+        private PortalFiapEntities contexto = new PortalFiapEntities();
 
         // GET: Aluno
         public ActionResult Listar()
@@ -57,6 +55,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             Aluno aluno = contexto.Aluno.Find(id);
             contexto.Aluno.Remove(aluno);
+            contexto.SaveChanges();
             TempData["mensagem"] = "Aluno excluído com sucesso";
             return RedirectToAction("Listar");
         }

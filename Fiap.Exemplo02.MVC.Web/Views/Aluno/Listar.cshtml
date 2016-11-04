@@ -6,12 +6,24 @@
 
 @if (TempData["mensagem"] != null)
 {
-    <div class="alert alert-success">
+    <div class="alert alert-dismissable alert-success">
         @TempData["mensagem"]
     </div>
 }
 
 <h2>Lista de alunos</h2>
+<br />
+
+@using (Html.BeginForm("Buscar", "Aluno", FormMethod.Get, new { @class = "form form-inline" }))
+{
+    <div class="form-group">
+        @Html.TextBox("nomeBusca", "", new { @class = "form-control", placeholder = "Buscar aluno..." })
+        <input type="submit" value="Buscar" class="btn btn-primary" />
+    </div>
+    <br />
+    <br />
+    <br />
+}
 
 <p>
     @Html.ActionLink("Novo aluno", "Cadastrar")
@@ -47,11 +59,11 @@
             @Html.DisplayFor(modelItem => item.Bolsa)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Desconto)
+            @Html.DisplayFor(modelItem => item.Desconto)%
         </td>
         <td>
-            @Html.ActionLink("Alterar", "Alterar", new { id = item.Id, @class = "btn btn-sm btn-warning" })
-            <a href="#" onclick="callExcluirModal(@item.Id)" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ExcluirModal">Excluir</a>
+            <a href="/Aluno/Alterar/@item.Id" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="#" onclick="alunoId.value = @item.Id" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ExcluirModal"><span class="glyphicon glyphicon-remove"></a>
         </td>
     </tr>
 }
@@ -76,7 +88,7 @@
                 
                 @using (Html.BeginForm("Excluir", "Aluno", FormMethod.Post))
                 {
-                    <input type="hidden" id="id-aluno" name="id" />
+                    <input type="hidden" id="alunoId" name="id" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
                     <input type="submit" value="Sim" class="btn btn-default" />
                 }
@@ -86,7 +98,10 @@
 </div>
 
 <script>
-    function callExcluirModal(id) {
-        $('#id-aluno').val(id);
-    }
+    $(document).ready(function() {
+        alert("Document ready. jQuery works.");
+        setTimeout(function() {
+            $(".alert").alert('close');
+        }, 2500);
+    });
 </script>

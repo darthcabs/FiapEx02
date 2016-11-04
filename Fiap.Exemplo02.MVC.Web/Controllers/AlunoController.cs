@@ -1,6 +1,7 @@
 ﻿using Fiap.Exemplo02.MVC.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -8,9 +9,18 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
     public class AlunoController : Controller
     {
-        private PortalFiapEntities contexto = new PortalFiapEntities();
+        private PortalContext contexto = new PortalContext();
 
         // GET: Aluno
+        public ActionResult Buscar(string nomeBusca)
+        {
+            List<Aluno> alunos = contexto.Aluno.Where(a => a.Nome.Contains(nomeBusca)).ToList();
+            
+            //return View() -> Direciona para uma view
+            //return RedirectToAction() -> Chama um método do controller
+            return View("Listar", alunos);
+        }
+
         public ActionResult Listar()
         {
             List<Aluno> alunos = contexto.Aluno.ToList();
@@ -31,32 +41,56 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         [HttpPost]
         public ActionResult Cadastrar(Aluno aluno)
         {
-            contexto.Aluno.Add(aluno);
-            contexto.SaveChanges();
-            TempData["mensagem"] = "Aluno cadastrado";
+            try
+            {
+                contexto.Aluno.Add(aluno);
+                contexto.SaveChanges();
+                TempData["mensagem"] = "Aluno cadastrado";
+            }
+            catch (DbUpdateException)
+            {
+                TempData["mensagem"] = "Falha ao cadastrar aluno. Reveja os dados e tente novamente";
+            }
+            
             return RedirectToAction("Listar");
         }
 
         [HttpPost]
         public ActionResult Alterar(Aluno alunoForm)
         {
-            Aluno aluno = contexto.Aluno.Find(alunoForm.Id);
-            aluno.Nome = alunoForm.Nome;
-            aluno.DataNascimento = alunoForm.DataNascimento;
-            aluno.Bolsa = alunoForm.Bolsa;
-            aluno.Desconto = alunoForm.Desconto;
-            contexto.SaveChanges();
-            TempData["mensagem"] = "Dados do aluno alterados";
+            try
+            {
+                Aluno aluno = contexto.Aluno.Find(alunoForm.Id);
+                aluno.Nome = alunoForm.Nome;
+                aluno.DataNascimento = alunoForm.DataNascimento;
+                aluno.Bolsa = alunoForm.Bolsa;
+                aluno.Desconto = alunoForm.Desconto;
+                contexto.SaveChanges();
+                TempData["mensagem"] = "Dados do aluno alterados";
+            }
+            catch (Exception)
+            {
+                TempData["mensagem"] = "Falha ao alterar o aluno. Reveja os dados e tente novamente";
+            }
+            
             return RedirectToAction("Listar");
         }
 
         [HttpPost]
         public ActionResult Excluir(int id)
         {
-            Aluno aluno = contexto.Aluno.Find(id);
-            contexto.Aluno.Remove(aluno);
-            contexto.SaveChanges();
-            TempData["mensagem"] = "Aluno excluído com sucesso";
+            try
+            {
+                Aluno aluno = contexto.Aluno.Find(id);
+                contexto.Aluno.Remove(aluno);
+                contexto.SaveChanges();
+                TempData["mensagem"] = "Aluno excluído com sucesso";
+            }
+            catch (Exception)
+            {
+                TempData["mensagem"] = "Falha ao excluir o aluno. Tente novamente.";
+            }
+            
             return RedirectToAction("Listar");
         }
     }

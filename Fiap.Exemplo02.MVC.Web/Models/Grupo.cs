@@ -11,13 +11,14 @@ namespace Fiap.Exemplo02.MVC.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class Aluno
+    using System.ComponentModel.DataAnnotations;
+    public partial class Grupo
     {
         public int Id { get; set; }
+        [Display(Name = "Nome do Grupo")]
         public string Nome { get; set; }
-        public System.DateTime DataNascimento { get; set; }
-        public bool Bolsa { get; set; }
-        public Nullable<double> Desconto { get; set; }
+        public Nullable<double> Nota { get; set; }
+    
+        public virtual Projeto Projeto { get; set; }
     }
 }

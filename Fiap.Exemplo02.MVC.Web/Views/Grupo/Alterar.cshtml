@@ -76,6 +76,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                @Html.HiddenFor(i => i.Projeto.Id, new { name = "projetoId" })
+                @Html.HiddenFor(i => i.Id, new { name = "grupoId" })
                 <input type="submit" value="Salvar" class="btn btn-default" />
             </div>
         </div>

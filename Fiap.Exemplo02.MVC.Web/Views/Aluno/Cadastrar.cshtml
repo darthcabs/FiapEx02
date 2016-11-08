@@ -4,7 +4,7 @@
     ViewBag.Title = "Cadastrar aluno";
 }
 
-<h2>Cadastrar Aluno</h2>
+<h3>Cadastrar Aluno</h3>
 
 
 @using (Html.BeginForm()) 
@@ -34,7 +34,7 @@
             @Html.LabelFor(model => model.Bolsa, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Bolsa)
+                    @Html.EditorFor(model => model.Bolsa, new { @class = "form-control control-label col-md-2"})
                     @Html.ValidationMessageFor(model => model.Bolsa, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -48,6 +48,11 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(a => a.Grupo, new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(a => a.GrupoId, ViewBag.grupos as SelectList, "Selecione", new { @class = "form-control control-label col-md-2" })
+        </div>
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Cadastrar" class="btn btn-default" />

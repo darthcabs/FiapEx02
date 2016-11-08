@@ -5,10 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="efb40ba6ac474bb6adb0c832d35f2ee0" Name="Diagram1">
-        <EntityTypeShape EntityType="PortalFiap.Model.Aluno" Width="1.5" PointX="0.5" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PortalFiap.Model.Grupo" Width="1.5" PointX="2.5" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="PortalFiap.Model.Projeto" Width="1.5" PointX="5" PointY="1.75" IsExpanded="true" />
-        <AssociationConnector Association="PortalFiap.Model.FK_Projeto_Grupo" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PortalFiap.Model.Grupo" Width="1.5" PointX="5.375" PointY="1.125" />
+        <EntityTypeShape EntityType="PortalFiap.Model.Projeto" Width="1.5" PointX="7.875" PointY="0.875" />
+        <AssociationConnector Association="PortalFiap.Model.FK_Projeto_Grupo" />
+        <EntityTypeShape EntityType="PortalFiap.Model.Aluno" Width="1.5" PointX="3" PointY="0.875" />
+        <AssociationConnector Association="PortalFiap.Model.FK_Aluno_Grupo" />
+        <EntityTypeShape EntityType="PortalFiap.Model.Professor" Width="1.5" PointX="0.625" PointY="1" />
+        <AssociationConnector Association="PortalFiap.Model.ProfessorAluno" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

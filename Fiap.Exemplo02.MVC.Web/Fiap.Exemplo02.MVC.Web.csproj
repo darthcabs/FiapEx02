@@ -198,10 +198,18 @@
     <Compile Include="Models\Grupo.cs">
       <DependentUpon>Banco.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Professor.cs">
+      <DependentUpon>Banco.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Projeto.cs">
       <DependentUpon>Banco.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AlunoRepository.cs" />
+    <Compile Include="Repositories\GrupoRepository.cs" />
+    <Compile Include="Repositories\IAlunoRepository.cs" />
+    <Compile Include="Repositories\IGrupoRepository.cs" />
+    <Compile Include="UnitsOfWork\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

@@ -1,4 +1,5 @@
 ﻿using Fiap.Exemplo02.MVC.Web.Models;
+using Fiap.Exemplo02.MVC.Web.UnitsOfWork;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -9,12 +10,12 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
     public class AlunoController : Controller
     {
-        private PortalFiapEntities contexto = new PortalFiapEntities();
+        private UnitOfWork _unit = new UnitOfWork();
 
         // GET: Aluno
         public ActionResult Buscar(string nomeBusca)
         {
-            List<Aluno> alunos = contexto.Aluno.Where(a => a.Nome.Contains(nomeBusca)).ToList();
+            List<Aluno> alunos = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(nomeBusca)).ToList();
             
             //return View() -> Direciona para uma view
             //return RedirectToAction() -> Chama um método do controller
@@ -23,18 +24,25 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
         public ActionResult Listar()
         {
-            List<Aluno> alunos = contexto.Aluno.ToList();
+            //.Include("Professor") -> Faz com que ao buscar a lista de alunos, ele traga também todos
+            // os professores associados ao aluno
+            //List<Aluno> alunos = contexto.Aluno.Include("Professor").ToList();
+
+            List<Aluno> alunos = _unit.AlunoRepository.Listar().ToList();
             return View(alunos);
         }
 
         public ActionResult Cadastrar()
         {
+            List<Grupo> grupos = _unit.GrupoRepository.Listar().ToList();
+            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
+
             return View();
         }
 
         public ActionResult Alterar(int id)
         {
-            Aluno aluno = contexto.Aluno.Find(id);
+            Aluno aluno = _unit.AlunoRepository.BuscarPorId(id);
             return View(aluno);
         }
 
@@ -43,8 +51,8 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             try
             {
-                contexto.Aluno.Add(aluno);
-                contexto.SaveChanges();
+                _unit.AlunoRepository.Cadastrar(aluno);
+                _unit.Salvar();
                 TempData["mensagem"] = "Aluno cadastrado";
             }
             catch (DbUpdateException)
@@ -56,16 +64,12 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Alterar(Aluno alunoForm)
+        public ActionResult Alterar(Aluno aluno)
         {
             try
             {
-                Aluno aluno = contexto.Aluno.Find(alunoForm.Id);
-                aluno.Nome = alunoForm.Nome;
-                aluno.DataNascimento = alunoForm.DataNascimento;
-                aluno.Bolsa = alunoForm.Bolsa;
-                aluno.Desconto = alunoForm.Desconto;
-                contexto.SaveChanges();
+                _unit.AlunoRepository.Atualizar(aluno);
+                _unit.Salvar();
                 TempData["mensagem"] = "Dados do aluno alterados";
             }
             catch (Exception)
@@ -81,9 +85,8 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             try
             {
-                Aluno aluno = contexto.Aluno.Find(id);
-                contexto.Aluno.Remove(aluno);
-                contexto.SaveChanges();
+                _unit.AlunoRepository.Remover(id);
+                _unit.Salvar();
                 TempData["mensagem"] = "Aluno excluído com sucesso";
             }
             catch (Exception)
@@ -92,6 +95,12 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
             }
             
             return RedirectToAction("Listar");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _unit.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

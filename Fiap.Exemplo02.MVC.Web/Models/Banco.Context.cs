@@ -25,8 +25,9 @@ namespace Fiap.Exemplo02.MVC.Web.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Aluno> Aluno { get; set; }
         public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Projeto> Projeto { get; set; }
+        public virtual DbSet<Aluno> Aluno { get; set; }
+        public virtual DbSet<Professor> Professor { get; set; }
     }
 }

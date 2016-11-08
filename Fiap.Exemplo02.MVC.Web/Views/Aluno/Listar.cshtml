@@ -43,6 +43,9 @@
             @Html.DisplayNameFor(model => model.Desconto)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Grupo)
+        </th>
+        <th>
             Acões
         </th>
     </tr>
@@ -60,6 +63,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Desconto)%
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Grupo.Nome)
         </td>
         <td>
             <a href="/Aluno/Alterar/@item.Id" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>

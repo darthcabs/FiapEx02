@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Fiap.Exemplo02.Database.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PortalFiap.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Aluno">
           <Key>
             <PropertyRef Name="Id" />
@@ -46,7 +46,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FiapExemplo02DatabaseModelStoreContainer">
+        <EntityContainer Name="PortalFiapModelStoreContainer">
           <EntitySet Name="Aluno" EntityType="Self.Aluno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projeto" EntityType="Self.Projeto" Schema="dbo" store:Type="Tables" />
@@ -55,10 +55,11 @@
             <End Role="Projeto" EntitySet="Projeto" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Fiap.Exemplo02.Database.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="PortalFiap.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Aluno">
           <Key>
             <PropertyRef Name="Id" />
@@ -69,39 +70,30 @@
           <Property Name="Bolsa" Type="Boolean" Nullable="false" />
           <Property Name="Desconto" Type="Double" />
         </EntityType>
-        <EntityContainer Name="PortalContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Aluno" EntityType="Self.Aluno" />
-          <EntitySet Name="Grupo" EntityType="Fiap.Exemplo02.Database.Model.Grupo" />
-          <EntitySet Name="Projeto" EntityType="Fiap.Exemplo02.Database.Model.Projeto" />
-          <AssociationSet Name="FK_Projeto_Grupo" Association="Fiap.Exemplo02.Database.Model.FK_Projeto_Grupo">
-            <End Role="Grupo" EntitySet="Grupo" />
-            <End Role="Projeto" EntitySet="Projeto" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="Grupo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Nota" Type="Double" />
-          <NavigationProperty Name="Projeto" Relationship="Fiap.Exemplo02.Database.Model.FK_Projeto_Grupo" FromRole="Grupo" ToRole="Projeto" />
+          <NavigationProperty Name="Projeto" Relationship="Self.FK_Projeto_Grupo" FromRole="Grupo" ToRole="Projeto" />
         </EntityType>
         <EntityType Name="Projeto">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DataTermino" Type="DateTime" Precision="3" />
           <Property Name="Entregue" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Grupo" Relationship="Fiap.Exemplo02.Database.Model.FK_Projeto_Grupo" FromRole="Projeto" ToRole="Grupo" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK_Projeto_Grupo" FromRole="Projeto" ToRole="Grupo" />
         </EntityType>
         <Association Name="FK_Projeto_Grupo">
-          <End Type="Fiap.Exemplo02.Database.Model.Grupo" Role="Grupo" Multiplicity="1" />
-          <End Type="Fiap.Exemplo02.Database.Model.Projeto" Role="Projeto" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
+          <End Role="Projeto" Type="Self.Projeto" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Grupo">
               <PropertyRef Name="Id" />
@@ -111,14 +103,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="PortalFiapEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Aluno" EntityType="Self.Aluno" />
+          <EntitySet Name="Grupo" EntityType="Self.Grupo" />
+          <EntitySet Name="Projeto" EntityType="Self.Projeto" />
+          <AssociationSet Name="FK_Projeto_Grupo" Association="Self.FK_Projeto_Grupo">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Projeto" EntitySet="Projeto" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FiapExemplo02DatabaseModelStoreContainer" CdmEntityContainer="PortalContext">
+        <EntityContainerMapping StorageEntityContainer="PortalFiapModelStoreContainer" CdmEntityContainer="PortalFiapEntities">
           <EntitySetMapping Name="Aluno">
-            <EntityTypeMapping TypeName="Fiap.Exemplo02.Database.Model.Aluno">
+            <EntityTypeMapping TypeName="PortalFiap.Model.Aluno">
               <MappingFragment StoreEntitySet="Aluno">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
@@ -129,23 +130,23 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Grupo">
-            <EntityTypeMapping TypeName="Fiap.Exemplo02.Database.Model.Grupo">
+            <EntityTypeMapping TypeName="PortalFiap.Model.Grupo">
               <MappingFragment StoreEntitySet="Grupo">
-                <ScalarProperty Name="Nota" ColumnName="Nota" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Projeto">
-            <EntityTypeMapping TypeName="Fiap.Exemplo02.Database.Model.Projeto">
+            <EntityTypeMapping TypeName="PortalFiap.Model.Projeto">
               <MappingFragment StoreEntitySet="Projeto">
-                <ScalarProperty Name="Entregue" ColumnName="Entregue" />
-                <ScalarProperty Name="DataTermino" ColumnName="DataTermino" />
-                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="DataTermino" ColumnName="DataTermino" />
+                <ScalarProperty Name="Entregue" ColumnName="Entregue" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

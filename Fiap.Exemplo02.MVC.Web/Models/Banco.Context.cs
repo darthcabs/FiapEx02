@@ -13,10 +13,10 @@ namespace Fiap.Exemplo02.MVC.Web.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PortalContext : DbContext
+    public partial class PortalFiapEntities : DbContext
     {
-        public PortalContext()
-            : base("name=PortalContext")
+        public PortalFiapEntities()
+            : base("name=PortalFiapEntities")
         {
         }
     

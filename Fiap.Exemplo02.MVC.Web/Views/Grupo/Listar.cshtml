@@ -19,6 +19,18 @@
         <th>
             @Html.DisplayNameFor(model => model.Projeto.Nome)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Projeto.Descricao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Projeto.DataInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Projeto.DataTermino)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Projeto.Entregue)
+        </th>
         <th></th>
     </tr>
 
@@ -34,9 +46,54 @@
             @Html.DisplayFor(modelItem => item.Projeto.Nome)
         </td>
         <td>
-            
+            @Html.DisplayFor(modelItem => item.Projeto.Descricao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Projeto.DataInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Projeto.DataTermino)
+        </td>
+        <td>
+            @if (item.Projeto.Entregue == true)
+            {
+                <p>Sim</p>
+            }
+            else
+            {
+                <p>Não</p>
+            }
+        </td>
+        <td>
+            <a href="/Grupo/Alterar/@item.Id" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a href="#" onclick="grupoId.value = @item.Id" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ExcluirModal"><span class="glyphicon glyphicon-remove"></span></a>
         </td>
     </tr>
 }
-
 </table>
+
+<!-- Modal -->
+<div id="ExcluirModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Excluir</h4>
+            </div>
+            <div class="modal-body">
+                <p>Deseja excluir o grupo?</p>
+            </div>
+            <div class="modal-footer">
+
+                @using (Html.BeginForm("Excluir", "Grupo", FormMethod.Post))
+                {
+                    <input type="hidden" id="grupoId" name="id" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                    <input type="submit" value="Sim" class="btn btn-default" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

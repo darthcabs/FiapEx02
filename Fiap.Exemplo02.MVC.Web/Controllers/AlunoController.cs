@@ -9,7 +9,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
     public class AlunoController : Controller
     {
-        private PortalContext contexto = new PortalContext();
+        private PortalFiapEntities contexto = new PortalFiapEntities();
 
         // GET: Aluno
         public ActionResult Buscar(string nomeBusca)

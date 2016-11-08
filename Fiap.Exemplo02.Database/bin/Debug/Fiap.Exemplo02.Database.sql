@@ -36,28 +36,72 @@ IF N'$(__IsSqlCmdEnabled)' NOT LIKE N'True'
 
 
 GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET ARITHABORT ON,
-                CONCAT_NULL_YIELDS_NULL ON,
-                CURSOR_DEFAULT LOCAL 
-            WITH ROLLBACK IMMEDIATE;
-    END
+USE [$(DatabaseName)];
 
 
 GO
-IF EXISTS (SELECT 1
-           FROM   [master].[dbo].[sysdatabases]
-           WHERE  [name] = N'$(DatabaseName)')
-    BEGIN
-        ALTER DATABASE [$(DatabaseName)]
-            SET PAGE_VERIFY NONE,
-                DISABLE_BROKER 
-            WITH ROLLBACK IMMEDIATE;
-    END
+PRINT N'Rename refactoring operation with key a7650628-99fe-43a9-81f9-e72193205767 is skipped, element [dbo].[ProfessorAluno].[Id] (SqlSimpleColumn) will not be renamed to AlunoId';
+
+
+GO
+PRINT N'Creating [dbo].[Professor]...';
+
+
+GO
+CREATE TABLE [dbo].[Professor] (
+    [Id]      INT            IDENTITY (1, 1) NOT NULL,
+    [Nome]    NVARCHAR (150) NOT NULL,
+    [Salario] DECIMAL (18)   NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[ProfessorAluno]...';
+
+
+GO
+CREATE TABLE [dbo].[ProfessorAluno] (
+    [AlunoId]     INT NOT NULL,
+    [ProfessorId] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([AlunoId] ASC, [ProfessorId] ASC)
+);
+
+
+GO
+PRINT N'Creating [dbo].[FK_ProfessorAluno_Aluno]...';
+
+
+GO
+ALTER TABLE [dbo].[ProfessorAluno] WITH NOCHECK
+    ADD CONSTRAINT [FK_ProfessorAluno_Aluno] FOREIGN KEY ([AlunoId]) REFERENCES [dbo].[Aluno] ([Id]);
+
+
+GO
+PRINT N'Creating [dbo].[FK_ProfessorAluno_Professor]...';
+
+
+GO
+ALTER TABLE [dbo].[ProfessorAluno] WITH NOCHECK
+    ADD CONSTRAINT [FK_ProfessorAluno_Professor] FOREIGN KEY ([ProfessorId]) REFERENCES [dbo].[Professor] ([Id]);
+
+
+GO
+-- Refactoring step to update target server with deployed transaction logs
+
+IF OBJECT_ID(N'dbo.__RefactorLog') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[__RefactorLog] (OperationKey UNIQUEIDENTIFIER NOT NULL PRIMARY KEY)
+    EXEC sp_addextendedproperty N'microsoft_database_tools_support', N'refactoring log', N'schema', N'dbo', N'table', N'__RefactorLog'
+END
+GO
+IF NOT EXISTS (SELECT OperationKey FROM [dbo].[__RefactorLog] WHERE OperationKey = 'a7650628-99fe-43a9-81f9-e72193205767')
+INSERT INTO [dbo].[__RefactorLog] (OperationKey) values ('a7650628-99fe-43a9-81f9-e72193205767')
+
+GO
+
+GO
+PRINT N'Checking existing data against newly created constraints';
 
 
 GO
@@ -65,18 +109,9 @@ USE [$(DatabaseName)];
 
 
 GO
-PRINT N'Creating [dbo].[Aluno]...';
+ALTER TABLE [dbo].[ProfessorAluno] WITH CHECK CHECK CONSTRAINT [FK_ProfessorAluno_Aluno];
 
-
-GO
-CREATE TABLE [dbo].[Aluno] (
-    [Id]             INT            IDENTITY (1, 1) NOT NULL,
-    [Nome]           NVARCHAR (150) NOT NULL,
-    [DataNascimento] DATETIME       NOT NULL,
-    [Bolsa]          BIT            NOT NULL,
-    [Desconto]       FLOAT (53)     NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
-);
+ALTER TABLE [dbo].[ProfessorAluno] WITH CHECK CHECK CONSTRAINT [FK_ProfessorAluno_Professor];
 
 
 GO

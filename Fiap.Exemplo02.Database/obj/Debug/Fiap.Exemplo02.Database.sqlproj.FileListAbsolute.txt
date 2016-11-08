@@ -7,3 +7,12 @@ C:\Users\rm76860\Desktop\Fiap.Exemplo02.MVC.Web\Fiap.Exemplo02.Database\obj\Debu
 C:\Users\rm76860\Desktop\Fiap.Exemplo02.MVC.Web\Fiap.Exemplo02.Database\obj\Debug\predeploy.sql
 C:\Users\rm76860\Desktop\Fiap.Exemplo02.MVC.Web\Fiap.Exemplo02.Database\obj\Debug\Fiap.Exemplo02.Database.dll
 C:\Users\rm76860\Desktop\Fiap.Exemplo02.MVC.Web\Fiap.Exemplo02.Database\obj\Debug\Fiap.Exemplo02.Database.pdb
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\bin\Debug\Fiap.Exemplo02.Database.dacpac
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\bin\Debug\Fiap.Exemplo02.Database.dll
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\bin\Debug\Fiap.Exemplo02.Database.pdb
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\Model.xml
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\refactor.xml
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\postdeploy.sql
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\predeploy.sql
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\Fiap.Exemplo02.Database.dll
+C:\Users\rm76860\Desktop\FiapEx02\Fiap.Exemplo02.Database\obj\Debug\Fiap.Exemplo02.Database.pdb

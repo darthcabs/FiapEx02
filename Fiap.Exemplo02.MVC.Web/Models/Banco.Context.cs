@@ -13,10 +13,10 @@ namespace Fiap.Exemplo02.MVC.Web.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class PortalFiapEntities : DbContext
+    public partial class PortalFiapContext : DbContext
     {
-        public PortalFiapEntities()
-            : base("name=PortalFiapEntities")
+        public PortalFiapContext()
+            : base("name=PortalFiapContext")
         {
         }
     
@@ -25,9 +25,9 @@ namespace Fiap.Exemplo02.MVC.Web.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Grupo> Grupo { get; set; }
-        public virtual DbSet<Projeto> Projeto { get; set; }
         public virtual DbSet<Aluno> Aluno { get; set; }
+        public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Professor> Professor { get; set; }
+        public virtual DbSet<Projeto> Projeto { get; set; }
     }
 }

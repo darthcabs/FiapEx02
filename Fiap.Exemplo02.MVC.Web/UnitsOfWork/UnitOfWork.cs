@@ -6,33 +6,57 @@ namespace Fiap.Exemplo02.MVC.Web.UnitsOfWork
 {
     class UnitOfWork : IDisposable
     {
-        private PortalFiapEntities _context = new PortalFiapEntities();
+        private PortalFiapContext _context = new PortalFiapContext();
 
-        private IAlunoRepository _alunoRepository;
+        private IGenericRepository<Aluno> _alunoRepository;
+        private IGenericRepository<Grupo> _grupoRepository;
+        private IGenericRepository<Projeto> _projetoRepository;
+        private IProfessorRepository _professorRepository;
 
-        public IAlunoRepository AlunoRepository
+        public IGenericRepository<Aluno> AlunoRepository
         {
             get
             {
                 if (_alunoRepository == null)
                 {
-                    _alunoRepository = new AlunoRepository(_context);
+                    _alunoRepository = new GenericRepository<Aluno>(_context);
                 }
                 return _alunoRepository;
             }
         }
 
-        private IGrupoRepository _grupoRepository;
-
-        public IGrupoRepository GrupoRepository
+        public IGenericRepository<Grupo> GrupoRepository
         {
             get
             {
                 if (_grupoRepository == null)
                 {
-                    _grupoRepository = new GrupoRepository(_context);
+                    _grupoRepository = new GenericRepository<Grupo>(_context);
                 }
                 return _grupoRepository;
+            }
+        }
+        
+        public IGenericRepository<Projeto> ProjetoRepository
+        {
+            get
+            {
+                if (_projetoRepository == null)
+                {
+                    _projetoRepository = new GenericRepository<Projeto>(_context);
+                }
+                return _projetoRepository;
+            }
+        }
+        public IProfessorRepository ProfessorRepository
+        {
+            get
+            {
+                if (_professorRepository == null)
+                {
+                    _professorRepository = new ProfessorRepository(_context);
+                }
+                return _professorRepository;
             }
         }
 

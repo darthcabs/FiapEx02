@@ -126,74 +126,53 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PortalFiap.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="PortalFiapEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Grupo" EntityType="PortalFiap.Model.Grupo" />
-          <EntitySet Name="Projeto" EntityType="PortalFiap.Model.Projeto" />
-          <AssociationSet Name="FK_Projeto_Grupo" Association="PortalFiap.Model.FK_Projeto_Grupo">
-            <End Role="Grupo" EntitySet="Grupo" />
-            <End Role="Projeto" EntitySet="Projeto" />
-          </AssociationSet>
-          <EntitySet Name="Aluno" EntityType="PortalFiap.Model.Aluno" />
-          <AssociationSet Name="FK_Aluno_Grupo" Association="PortalFiap.Model.FK_Aluno_Grupo">
-            <End Role="Grupo" EntitySet="Grupo" />
-            <End Role="Aluno" EntitySet="Aluno" />
-          </AssociationSet>
-          <EntitySet Name="Professor" EntityType="PortalFiap.Model.Professor" />
-          <AssociationSet Name="ProfessorAluno" Association="PortalFiap.Model.ProfessorAluno">
-            <End Role="Aluno" EntitySet="Aluno" />
-            <End Role="Professor" EntitySet="Professor" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="Aluno">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Bolsa" Type="Boolean" Nullable="false" />
+          <Property Name="Desconto" Type="Double" />
+          <Property Name="GrupoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK_Aluno_Grupo" FromRole="Aluno" ToRole="Grupo" />
+          <NavigationProperty Name="Professor" Relationship="PortalFiap.Model.ProfessorAluno" FromRole="Aluno" ToRole="Professor" />
+        </EntityType>
         <EntityType Name="Grupo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Nota" Type="Double" />
-          <NavigationProperty Name="Projeto" Relationship="PortalFiap.Model.FK_Projeto_Grupo" FromRole="Grupo" ToRole="Projeto" />
-          <NavigationProperty Name="Aluno" Relationship="PortalFiap.Model.FK_Aluno_Grupo" FromRole="Grupo" ToRole="Aluno" />
+          <NavigationProperty Name="Aluno" Relationship="Self.FK_Aluno_Grupo" FromRole="Grupo" ToRole="Aluno" />
+          <NavigationProperty Name="Projeto" Relationship="Self.FK_Projeto_Grupo" FromRole="Grupo" ToRole="Projeto" />
+        </EntityType>
+        <EntityType Name="Professor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salario" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Aluno" Relationship="PortalFiap.Model.ProfessorAluno" FromRole="Professor" ToRole="Aluno" />
         </EntityType>
         <EntityType Name="Projeto">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DataTermino" Type="DateTime" Precision="3" />
           <Property Name="Entregue" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Grupo" Relationship="PortalFiap.Model.FK_Projeto_Grupo" FromRole="Projeto" ToRole="Grupo" />
-        </EntityType>
-        <Association Name="FK_Projeto_Grupo">
-          <End Type="PortalFiap.Model.Grupo" Role="Grupo" Multiplicity="1" />
-          <End Type="PortalFiap.Model.Projeto" Role="Projeto" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Grupo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Projeto">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Aluno">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Bolsa" Type="Boolean" Nullable="false" />
-          <Property Name="Desconto" Type="Double" />
-          <Property Name="GrupoId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Grupo" Relationship="PortalFiap.Model.FK_Aluno_Grupo" FromRole="Aluno" ToRole="Grupo" />
-          <NavigationProperty Name="Professor" Relationship="PortalFiap.Model.ProfessorAluno" FromRole="Aluno" ToRole="Professor" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK_Projeto_Grupo" FromRole="Projeto" ToRole="Grupo" />
         </EntityType>
         <Association Name="FK_Aluno_Grupo">
-          <End Type="PortalFiap.Model.Grupo" Role="Grupo" Multiplicity="1" />
-          <End Type="PortalFiap.Model.Aluno" Role="Aluno" Multiplicity="*" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Grupo">
               <PropertyRef Name="Id" />
@@ -203,64 +182,85 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Professor">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Salario" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Aluno" Relationship="PortalFiap.Model.ProfessorAluno" FromRole="Professor" ToRole="Aluno" />
-        </EntityType>
+        <Association Name="FK_Projeto_Grupo">
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="1" />
+          <End Role="Projeto" Type="Self.Projeto" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Projeto">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PortalFiapContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Aluno" EntityType="Self.Aluno" />
+          <EntitySet Name="Grupo" EntityType="Self.Grupo" />
+          <EntitySet Name="Professor" EntityType="Self.Professor" />
+          <EntitySet Name="Projeto" EntityType="Self.Projeto" />
+          <AssociationSet Name="FK_Aluno_Grupo" Association="Self.FK_Aluno_Grupo">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projeto_Grupo" Association="Self.FK_Projeto_Grupo">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Projeto" EntitySet="Projeto" />
+          </AssociationSet>
+          <AssociationSet Name="ProfessorAluno" Association="PortalFiap.Model.ProfessorAluno">
+            <End Role="Aluno" EntitySet="Aluno" />
+            <End Role="Professor" EntitySet="Professor" />
+          </AssociationSet>
+        </EntityContainer>
         <Association Name="ProfessorAluno">
           <End Type="PortalFiap.Model.Aluno" Role="Aluno" Multiplicity="*" />
           <End Type="PortalFiap.Model.Professor" Role="Professor" Multiplicity="*" />
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PortalFiapModelStoreContainer" CdmEntityContainer="PortalFiapEntities">
-          <EntitySetMapping Name="Grupo">
-            <EntityTypeMapping TypeName="PortalFiap.Model.Grupo">
-              <MappingFragment StoreEntitySet="Grupo">
-                <ScalarProperty Name="Nota" ColumnName="Nota" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Projeto">
-            <EntityTypeMapping TypeName="PortalFiap.Model.Projeto">
-              <MappingFragment StoreEntitySet="Projeto">
-                <ScalarProperty Name="Entregue" ColumnName="Entregue" />
-                <ScalarProperty Name="DataTermino" ColumnName="DataTermino" />
-                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="PortalFiapModelStoreContainer" CdmEntityContainer="PortalFiapContext">
           <EntitySetMapping Name="Aluno">
             <EntityTypeMapping TypeName="PortalFiap.Model.Aluno">
               <MappingFragment StoreEntitySet="Aluno">
-                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
-                <ScalarProperty Name="Desconto" ColumnName="Desconto" />
-                <ScalarProperty Name="Bolsa" ColumnName="Bolsa" />
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
+                <ScalarProperty Name="Bolsa" ColumnName="Bolsa" />
+                <ScalarProperty Name="Desconto" ColumnName="Desconto" />
+                <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grupo">
+            <EntityTypeMapping TypeName="PortalFiap.Model.Grupo">
+              <MappingFragment StoreEntitySet="Grupo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Professor">
             <EntityTypeMapping TypeName="PortalFiap.Model.Professor">
               <MappingFragment StoreEntitySet="Professor">
-                <ScalarProperty Name="Salario" ColumnName="Salario" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Salario" ColumnName="Salario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projeto">
+            <EntityTypeMapping TypeName="PortalFiap.Model.Projeto">
+              <MappingFragment StoreEntitySet="Projeto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="DataTermino" ColumnName="DataTermino" />
+                <ScalarProperty Name="Entregue" ColumnName="Entregue" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

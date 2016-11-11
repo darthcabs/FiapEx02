@@ -1,10 +1,6 @@
 ﻿using Fiap.Exemplo02.MVC.Web.Models;
 using Fiap.Exemplo02.MVC.Web.UnitsOfWork;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Fiap.Exemplo02.MVC.Web.Controllers
@@ -15,7 +11,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         // GET: Grupo
         public ActionResult Listar()
         {
-            List<Grupo> grupos = _unit.GrupoRepository.Listar().ToList();
+            List<Grupo> grupos = _unit.GrupoRepository.Listar() as List<Grupo>;
             return View(grupos);
         }
 
@@ -51,9 +47,10 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Excluir(int Id)
+        public ActionResult Excluir(int id)
         {
-            _unit.GrupoRepository.Remover(Id);
+            Grupo grupo = _unit.GrupoRepository.BuscarPorId(id);
+            _unit.GrupoRepository.Remover(grupo);
             TempData["mensagem"] = "Grupo excluído com sucesso";
             _unit.Salvar();
 

@@ -11,7 +11,7 @@ namespace Fiap.Exemplo02.MVC.Web.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class Aluno
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,7 +22,6 @@ namespace Fiap.Exemplo02.MVC.Web.Models
     
         public int Id { get; set; }
         public string Nome { get; set; }
-        [Display(Name = "Data de Nascimento")]
         public System.DateTime DataNascimento { get; set; }
         public bool Bolsa { get; set; }
         public Nullable<double> Desconto { get; set; }
@@ -30,6 +29,6 @@ namespace Fiap.Exemplo02.MVC.Web.Models
     
         public virtual Grupo Grupo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<Professor> Professor { get; set; }
+        public virtual ICollection<Professor> Professor { get; set; }
     }
 }

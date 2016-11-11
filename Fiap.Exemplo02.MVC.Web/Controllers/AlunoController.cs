@@ -12,10 +12,19 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
     {
         private UnitOfWork _unit = new UnitOfWork();
 
-        // GET: Aluno
-        public ActionResult Buscar(string nomeBusca)
+        #region GET
+        public ActionResult Buscar(string nomeBusca, int? idGrupo)
         {
-            List<Aluno> alunos = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(nomeBusca)).ToList();
+            List<Aluno> alunos = null;
+            if (idGrupo == null)
+            {
+                alunos = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(nomeBusca)).ToList();
+            }
+            else
+            {
+                alunos = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(nomeBusca) && 
+                                                         a.GrupoId == idGrupo).ToList();
+            }
             
             //return View() -> Direciona para uma view
             //return RedirectToAction() -> Chama um método do controller
@@ -29,9 +38,11 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
             //List<Aluno> alunos = contexto.Aluno.Include("Professor").ToList();
 
             List<Aluno> alunos = _unit.AlunoRepository.Listar().ToList();
+            CarregarComboGrupo();
+
             return View(alunos);
         }
-
+        
         public ActionResult Cadastrar()
         {
             List<Grupo> grupos = _unit.GrupoRepository.Listar().ToList();
@@ -45,7 +56,9 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
             Aluno aluno = _unit.AlunoRepository.BuscarPorId(id);
             return View(aluno);
         }
+        #endregion
 
+        #region POST
         [HttpPost]
         public ActionResult Cadastrar(Aluno aluno)
         {
@@ -85,7 +98,8 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             try
             {
-                _unit.AlunoRepository.Remover(id);
+                Aluno aluno = _unit.AlunoRepository.BuscarPorId(id);
+                _unit.AlunoRepository.Remover(aluno);
                 _unit.Salvar();
                 TempData["mensagem"] = "Aluno excluído com sucesso";
             }
@@ -97,10 +111,19 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
             return RedirectToAction("Listar");
         }
 
+        #endregion
+
+        private void CarregarComboGrupo()
+        {
+            ViewBag.grupos = new SelectList(_unit.GrupoRepository.Listar(), "Id", "Nome");
+        }
+
+        #region DISPOSE
         protected override void Dispose(bool disposing)
         {
             _unit.Dispose();
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

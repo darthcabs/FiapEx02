@@ -41,15 +41,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Projeto.DataInicio, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-lg-10">
-                @Html.EditorFor(model => model.Projeto.DataInicio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Projeto.DataInicio, new { @class = "form-control", value = "blah" } )
                 @Html.ValidationMessageFor(model => model.Projeto.DataInicio, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Projeto.DataTermino, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Projeto.DataTermino, new { @class = "control-label col-md-2" })
             <div class="col-lg-10">
-                @Html.EditorFor(model => model.Projeto.DataTermino, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Projeto.DataTermino, new { @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.Projeto.DataTermino, "", new { @class = "text-danger" })
             </div>
         </div>
